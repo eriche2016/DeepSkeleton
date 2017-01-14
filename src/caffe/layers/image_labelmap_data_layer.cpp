@@ -211,9 +211,11 @@ void ImageLabelmapDataLayer<Dtype>::load_batch(LabelmapBatch<Dtype>* batch) {
     Dtype *transformat_data = this->transformed_labelmap_.mutable_cpu_data();
     int zk_count = this->transformed_labelmap_.count();
     //receptive field: 5 14 40 92 196
+    // recompute labels(Z) to training the net
+    // equation (1) in page 5
     for(int zk_i=0;zk_i<zk_count;zk_i++){
       if(transformat_data[zk_i] < 1 || transformat_data[zk_i] >= 150)
-        transformat_data[zk_i] = Dtype(0);
+        transformat_data[zk_i] = Dtype(0); 
       
       else if(transformat_data[zk_i] >= 1 && transformat_data[zk_i] < 10)
         transformat_data[zk_i] = Dtype(1);
